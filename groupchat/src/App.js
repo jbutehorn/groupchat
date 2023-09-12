@@ -5,12 +5,23 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
-  
+  apiKey: "AIzaSyAVrzkl7ndq2zn9jQWR_cub0c4BdVH5OMo",
+  authDomain: "groupchat-f7cdf.firebaseapp.com",
+  projectId: "groupchat-f7cdf",
+  storageBucket: "groupchat-f7cdf.appspot.com",
+  messagingSenderId: "267754694617",
+  appId: "1:267754694617:web:8726eaebb0fedbafccdbc8",
+  measurementId: "G-79B59816XM"
 })
+
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+
+const [user] = useAuthState(auth);
 
 function App() {
   return (
@@ -18,8 +29,29 @@ function App() {
       <header className="App-header">
         
       </header>
+
+      <section>
+        {user ? <ChatRoom /> : <SignIn />}
+      </section>
     </div>
   );
+}
+
+function SignIn() {
+
+  const signInWithGoogle = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
+  }
+
+  return (
+    <button onClick={useSignInWithGoogle}>Sign in with Google</button>
+  )
+
+}
+
+function ChatRoom() {
+
 }
 
 export default App;
